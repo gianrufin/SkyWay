@@ -1,5 +1,7 @@
 package com.example.ui.components
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -57,6 +60,7 @@ import com.example.model.SavedRouteItem
 import com.example.model.SearchTarget
 import com.example.model.UnitSystem
 import com.example.model.MapStyle
+import com.example.model.AppUpdateInfo
 import com.example.ui.theme.AmberGlare
 import com.example.ui.theme.CyanClear
 import com.example.ui.theme.EmeraldOptimal
@@ -762,3 +766,118 @@ private val featuredCorridors = listOf(
         "High-elevation Rocky Mountain transit",
     ),
 )
+
+@Composable
+fun AppUpdateDialog(
+    updateInfo: AppUpdateInfo,
+    onDismiss: () -> Unit,
+) {
+    val context = LocalContext.current
+    BackHandler(onBack = onDismiss)
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SkySlateDeep.copy(alpha = 0.88f))
+            .clickable(onClick = onDismiss)
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .padding(24.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        GlassInstrumentPanel(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(enabled = false, onClick = {}),
+            cornerRadius = 26.dp,
+            elevated = true,
+            accentGlow = CyanClear,
+            contentPadding = PaddingValues(20.dp),
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Rounded.Explore,
+                            contentDescription = null,
+                            tint = CyanClear,
+                            modifier = Modifier.size(24.dp),
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = "New Update (${updateInfo.versionName})",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = InkPrimary,
+                        )
+                    }
+                    IconButton(onClick = onDismiss) {
+                        Icon(
+                            imageVector = Icons.Rounded.Close,
+                            contentDescription = stringResource(R.string.cd_close),
+                            tint = InkSecondary,
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Text(
+                    text = "RELEASE NOTES",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = CyanClear,
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+
+                RecessedInstrumentWell(
+                    cornerRadius = 16.dp,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        text = updateInfo.releaseNotes,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = InkPrimary,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    TactileGlassChip(
+                        onClick = onDismiss,
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text(
+                            text = "Later",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = InkSecondary,
+                        )
+                    }
+                    TactileGlassChip(
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo.downloadUrl))
+                            runCatching { context.startActivity(intent) }
+                            onDismiss()
+                        },
+                        selected = true,
+                        accentColor = CyanClear,
+                        modifier = Modifier.weight(1f).testTag("download_update_button"),
+                    ) {
+                        Text(
+                            text = "Download APK",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = InkPrimary,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

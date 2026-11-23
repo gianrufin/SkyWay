@@ -197,3 +197,10 @@ sealed interface RouteLoadState {
     data object Ready : RouteLoadState
     data class Error(val message: String) : RouteLoadState
 }
+
+@Immutable
+data class AppUpdateInfo(
+    val versionName: String,
+    val releaseNotes: String,
+    val downloadUrl: String,
+)

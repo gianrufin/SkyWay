@@ -10,6 +10,7 @@ import com.example.data.local.UserPreferences
 import com.example.data.local.UserPreferencesRepository
 import com.example.data.repository.RouteWeatherRepository
 import com.example.domain.RouteEvaluator
+import com.example.model.AppUpdateInfo
 import com.example.model.DepartureWindowSlot
 import com.example.model.EvaluatedRoute
 import com.example.model.PlacePoint
@@ -57,6 +58,8 @@ data class RouteWeatherUiState(
     val savedRoutes: List<SavedRouteItem> = emptyList(),
     val recentPlaces: List<PlacePoint> = emptyList(),
     val preferences: UserPreferences = UserPreferences(),
+    val updateInfo: AppUpdateInfo? = null,
+    val isUpdateDialogVisible: Boolean = false,
 ) {
     val activeRadarFrame: RadarFrame?
         get() = if (preferences.radarEnabled && radarFrames.isNotEmpty()) {
@@ -114,6 +117,25 @@ class RouteWeatherViewModel(application: Application) : AndroidViewModel(applica
             longitude = -122.4194,
         )
         internalState.update { it.copy(origin = defaultOrigin) }
+
+        // Simulate checking for a new version update
+        checkForUpdates()
+    }
+
+    fun checkForUpdates() {
+        viewModelScope.launch {
+            delay(2500L) // brief startup check simulation
+            val update = AppUpdateInfo(
+                versionName = "v1.1",
+                releaseNotes = "• Offline Tile Caching: Persistent FileSystemCache & automated route pre-caching.\n• M3 Expressive Motion: Fluid floating toolbar dock & spring transitions.\n• Multi-Router Resiliency: Robust fallback against routing server downtime.",
+                downloadUrl = "https://raw.githubusercontent.com/gianrufin/skyway/main/release/skyway-v1.0.apk",
+            )
+            internalState.update { it.copy(updateInfo = update, isUpdateDialogVisible = true) }
+        }
+    }
+
+    fun dismissUpdateDialog() {
+        internalState.update { it.copy(isUpdateDialogVisible = false) }
     }
 
     fun openSearch(target: SearchTarget) {

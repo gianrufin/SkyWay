@@ -80,6 +80,7 @@ import com.example.ui.components.InstrumentSettingsOverlay
 import com.example.ui.components.OsmMapCanvas
 import com.example.ui.components.RouteTimelineConsole
 import com.example.ui.components.SavedTripsOverlay
+import com.example.ui.components.AppUpdateDialog
 import com.example.ui.components.TactileGlassChip
 import com.example.ui.components.TactileGlassOrb
 import com.example.ui.theme.AmberGlare
@@ -383,6 +384,16 @@ fun RouteWeatherScreen(
                 onToggleHaptics = viewModel::setHapticsEnabled,
                 onClose = { viewModel.setSettingsOpen(false) },
             )
+        }
+
+        if (state.isUpdateDialogVisible) {
+            val update = state.updateInfo
+            if (update != null) {
+                AppUpdateDialog(
+                    updateInfo = update,
+                    onDismiss = viewModel::dismissUpdateDialog,
+                )
+            }
         }
     }
 }
