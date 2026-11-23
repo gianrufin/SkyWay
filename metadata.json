@@ -1,0 +1,6 @@
+{
+  "name": "SkyWay",
+  "description": "Tactile skeuomorphic route-synced weather instrument, live radar map, departure time scrubber, and sun-glare timeline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

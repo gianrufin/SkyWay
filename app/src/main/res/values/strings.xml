@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">SkyWay</string>
+    <string name="cd_swap_endpoints">Swap origin and destination</string>
+    <string name="cd_use_current_location">Use current location</string>
+    <string name="cd_toggle_radar">Toggle precipitation radar</string>
+    <string name="cd_recenter_route">Recenter route on map</string>
+    <string name="cd_saved_trips">Saved routes</string>
+    <string name="cd_settings">Instrument settings</string>
+    <string name="cd_bookmark_route">Save or remove route</string>
+    <string name="cd_expand_timeline">Expand or collapse timeline</string>
+    <string name="cd_close">Close</string>
+    <string name="search_origin_hint">Starting point…</string>
+    <string name="search_destination_hint">Where are you heading?</string>
+    <string name="empty_route_title">Chart Your Weather Corridor</string>
+    <string name="empty_route_subtitle">Search a destination to sync hourly forecasts, Doppler radar, and sun-glare telemetry to every mile of your drive.</string>
+    <string name="departure_label">DEPARTURE WINDOW</string>
+    <string name="best_window_label">Best Clear Window</string>
+    <string name="radar_live_label">LIVE RADAR</string>
+    <string name="sun_glare_severe">SEVERE SUN GLARE</string>
+    <string name="sun_glare_moderate">MODERATE GLARE</string>
+    <string name="sunrise_horizon">SUNRISE HORIZON</string>
+    <string name="sunset_horizon">SUNSET HORIZON</string>
+    <string name="error_retry">Retry</string>
+    <string name="cd_select_map_style">Select map style</string>
+    <string name="map_style_cockpit">Cockpit</string>
+    <string name="map_style_topo">Topo</string>
+    <string name="map_style_satellite">Satellite</string>
+    <string name="map_style_street">Street</string>
+</resources>
